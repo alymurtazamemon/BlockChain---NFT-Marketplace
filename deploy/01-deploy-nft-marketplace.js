@@ -1,4 +1,4 @@
-const { VERIFICATION_BLOCK_CONFIRMATIONS } = require("../helper-hardhat-config")
+const { VERIFICATION_BLOCK_CONFIRMATIONS, developmentChains } = require("../helper-hardhat-config")
 const { verify } = require("../utils/verify")
 require("dotenv").config()
 
@@ -14,7 +14,9 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         from: deployer,
         args: args,
         log: true,
-        waitConfirmations: VERIFICATION_BLOCK_CONFIRMATIONS,
+        waitConfirmations: developmentChains.includes(network.name)
+            ? 1
+            : VERIFICATION_BLOCK_CONFIRMATIONS,
     })
 
     // VERIFICATION : if not deployed on LocalHost
